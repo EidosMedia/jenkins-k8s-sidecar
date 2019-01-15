@@ -175,7 +175,7 @@ def main():
         logger.info("Jenkins is contactable, continuing.")
         break
       except Exception:
-        logging.exception("Jenkins is not up yet.  Waiting...")
+        logging.info("Jenkins is not up yet.  Waiting...")
         time.sleep(5)
     s.close()
     time.sleep(15)  # Wait for sshd daemon to start
