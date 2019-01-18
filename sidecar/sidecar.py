@@ -116,7 +116,6 @@ def watchForChanges(label, targetFolder, url, method, payload, namespace, logger
             if url is not None:
               request(url, method, payload, logger)
             elif jenkinsReloadConfig is not None:
-              pass
               jenkinsReloadConfig(admin_private_key, admin_user, ssh_port, logger)
           else:
             removeFile(targetFolder, filename, logger)
