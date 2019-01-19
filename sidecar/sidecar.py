@@ -78,7 +78,7 @@ def setup_custom_logger(name):
 
 
 def watchForChanges(label, targetFolder, url, method, payload, namespace, logger, admin_private_key="", admin_user="",
-                    ssh_port=944):
+                    ssh_port=1044):
   v1 = client.CoreV1Api()
   w = watch.Watch()
   resource_version = ""
@@ -170,14 +170,13 @@ def main():
     while True:
       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       try:
-        s.connect((host, jenkins_port))
+        s.connect((host, ssh_port))
         logger.info("Jenkins is contactable, continuing.")
         break
       except Exception:
         logging.info("Jenkins is not up yet.  Waiting...")
         time.sleep(5)
     s.close()
-    time.sleep(15)  # Wait for sshd daemon to start
     watchForChanges(label, targetFolder, url, method, payload, namespace, logger, admin_private_key, admin_user,
                     ssh_port)
   watchForChanges(label, targetFolder, url, method, payload, namespace, logger)
