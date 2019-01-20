@@ -24,8 +24,12 @@ def jenkinsReloadConfig(admin_private_key, admin_user, ssh_port, logger):
   result = stderr.read().decode("utf-8")
   if result == '':
     logger.info("jcasc successfully reloaded")
+    with open('/app/reload_successful.txt', 'w', encoding='utf-8') as f:
+      f.write("true")
   else:
     logger.error("jcasc failed to reload due to error: %s" % result)
+    with open('/app/reload_successful.txt', 'w', encoding='utf-8') as f:
+      f.write("false")
   logger.debug("Closing ssh client")
   ssh_client.close()
 
@@ -121,10 +125,16 @@ def watchForChanges(label, targetFolder, url, method, payload, namespace, logger
             removeFile(targetFolder, filename, logger)
             if url is not None:
               request(url, method, payload, logger)
+            elif jenkinsReloadConfig is not None:
+              jenkinsReloadConfig(admin_private_key, admin_user, ssh_port, logger)
 
 
 def main():
   logger = setup_custom_logger('sidecar')
+  if os.path.exists('/app/reload_successful.txt'):
+    os.remove('/app/reload_successful.txt')
+  with open('/app/reload_successful.txt', 'w', encoding='utf-8') as f:
+    f.write("true")
   logger.info("Starting config map collector")
   label = os.getenv('LABEL')
   logger.info("label is: %s" % label)
