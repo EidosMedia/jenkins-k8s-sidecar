@@ -165,12 +165,6 @@ def main():
       exit(1)
     logger.info("ssh_port is: %s" % ssh_port)
     ssh_port = int(ssh_port)
-    jenkins_port = os.environ['JENKINS_PORT']
-    if jenkins_port is None:
-      logger.error("Should have added JENKINS_PORT as environment variable! Exit")
-      exit(1)
-    logger.info("jenkins_port is: %s" % jenkins_port)
-    jenkins_port = int(jenkins_port)
     admin_user = os.environ['ADMIN_USER']
     logger.info("admin_user is: %s" % admin_user)
     if admin_user is None:
