@@ -101,12 +101,13 @@ def watchForChanges(label, targetFolder, url, method, payload, namespace, logger
     for event in stream:
       logger.debug("Start of stream loop")
       metadata = event['object'].metadata
-      logger.info(f'Working on configmap {metadata.namespace}/{metadata.name}')
+      logger.debug(f'Working on configmap {metadata.namespace}/{metadata.name}')
       if metadata.labels is None:
         continue
-      logger.info(f'Working on configmap {metadata.namespace}/{metadata.name}')
+      logger.debug(f'Working on configmap {metadata.namespace}/{metadata.name}')
       if label in event['object'].metadata.labels.keys():
         logger.info("Configmap with label found")
+        logger.info(f'Working on configmap {metadata.namespace}/{metadata.name}')
         dataMap = event['object'].data
         if dataMap is None:
           logger.error("Configmap does not have data.")
